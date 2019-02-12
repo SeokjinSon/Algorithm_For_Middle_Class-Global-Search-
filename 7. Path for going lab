@@ -1,0 +1,48 @@
+#define _CRT_SECURE_NO_WARNINGS
+#include <stdio.h>
+#include <stdlib.h>
+
+int arr[20][20] = { 0, }; // 그래프
+int visited[20] = { 0, }; // 방문 여부 체크
+int dotValue[20] = { 0, }; // 각 지점들의 최소 비용
+int n, m; // n : 정점, m : 간선
+int min = 1000; // 최소 비용
+
+void input();
+void solve(int a);
+
+int main(void) {
+	input();
+	visited[1] = 1;
+
+	solve(1);
+	printf("최소 비용 : %d\n", min==1000 ? -1 : min);
+
+	return 0;
+}
+
+void input() {
+	int start, end, value;
+
+	scanf("%d %d", &n, &m);
+	for (int i = 0; i < m; i++) {
+		scanf("%d %d %d", &start, &end, &value);
+		arr[start][end] = arr[end][start] = value;
+	}
+}
+
+void solve(int a) { // a : 현재 지점
+	if (a == n) {
+		if (dotValue[a] < min)
+			min = dotValue[a];
+		return;
+	}
+	for (int i = 1; i <= n; i++) { // i : 다음에 방문할 지점들
+		if (!visited[i] && (arr[a][i] != 0)) { // 아직 방문하지 않았고 연결되어 있으면
+			visited[i] = 1;
+			dotValue[i] = dotValue[a] + arr[a][i];
+			solve(i);
+			visited[i] = 0;
+		}
+	}
+}
