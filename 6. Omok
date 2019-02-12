@@ -1,0 +1,78 @@
+#define _CRT_SECURE_NO_WARNINGS
+#define ROW 19
+#define COL 19
+
+#include <stdio.h>
+
+// ↓, ↘, →, ↗
+int arr[ROW][COL] = { 0, };
+int count = 1;
+int egg = 0;
+int dx[4] = { 0, 1, 1, 1 };
+int dy[4] = { 1, 1, 0, -1 };
+
+void input();
+void solve();
+int searchVal(int row, int col, int dir);
+int inPlate(int a, int b);
+
+int main(void) {
+	input();
+	solve();
+	return 0;
+}
+
+void input() {
+	for (int i = 0; i < ROW; i++) {
+		for (int l = 0; l < COL; l++)
+			scanf("%d", &arr[i][l]);
+	}
+}
+
+void solve() {
+	for (int i = 0; i < ROW; i++) {
+		for (int l = 0; l < COL; l++) {
+			if (arr[i][l] != 0) {
+				egg = arr[i][l];
+				for (int k = 0; k < 5; k++) { // direction
+					count = 1;
+					if (searchVal(i, l, k)) {
+						printf("Color : %d\n", egg);
+						printf("Row : %d, Column : %d\n", i, l);
+						return;
+					}
+				}
+			}
+		}
+	}
+}
+
+int searchVal(int row, int col, int dir) {
+	int rLoc, cLoc;
+
+	rLoc = row;
+	cLoc = col;
+
+	for (int i = 0; i < 4; i++) {
+		rLoc = rLoc + dy[dir];
+		cLoc = cLoc + dx[dir];
+
+		if (inPlate(rLoc, cLoc) && (arr[rLoc][cLoc] == egg))
+			count++;
+		else
+			break;
+	}
+
+	if (count == 5)
+		return 1;
+	else
+		return 0;
+}
+
+// in plate : 1, Not in plate : 0
+int inPlate(int a, int b) {
+	if ((0 <= a && a < 19) && (0 <= b && b < 19))
+		return 1;
+	else
+		return 0;
+}
