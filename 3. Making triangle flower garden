@@ -1,0 +1,24 @@
+#define _CRT_SECURE_NO_WARNINGS
+#include <stdio.h>
+
+int length, count = 0;
+
+int solve();
+
+int main(void) {
+	scanf("%d", &length);
+	printf("Count of garden : %d\n", solve());
+	return 0;
+}
+
+int solve() {
+	for (int i = 1; i <= length; i++) {
+		for (int l = 1; l <= length; l++) {
+			for (int k = 1; k <= length; k++) {
+				if (((i + l + k) == length) && (i < (l + k)) && (k <= l) && (l <= i))
+					count++;
+			}
+		}
+	}
+	return count;
+}
