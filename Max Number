@@ -1,0 +1,50 @@
+#define _CRT_SECURE_NO_WARNINGS
+#define ROW 3
+#define COL 3
+
+#include <stdio.h>
+
+int arr[ROW][COL] = { 0, };
+int max = 0;
+int h, w; // h : row, w : column
+
+void input();
+void solve();
+void output();
+
+int main(void) {
+	input();
+	solve();
+	output();
+	return 0;
+}
+
+// input number in array
+void input() {
+	for (int i = 0; i < ROW; i++) {
+		for (int l = 0; l < COL; l++) {
+			scanf("%d", &arr[i][l]);
+			if(arr[h][w] > arr[i][l]) {
+				h = i;
+				w = l;
+			}
+		}		
+	}
+}
+
+void solve() {
+	for (int i = 0; i < ROW; i++) {
+		for (int l = 0; l < COL; l++) {
+			if (arr[i][l] > max) {
+				max = arr[i][l];
+				h = i;
+				w = l;
+			}
+		}
+	}
+}
+
+void output() {
+	printf("최댓값 : %d\n", max);
+	printf("행 열 : %d %d\n", h+1, w+1);
+}
