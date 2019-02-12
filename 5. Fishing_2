@@ -1,0 +1,41 @@
+#define _CRT_SECURE_NO_WARNINGS
+#include <stdio.h>
+
+// net : N(row), M(column), pond : W(row), H(column)
+int N, M, W, H; 
+int max = 0;
+int arr[100][100];
+
+void input();
+int solve();
+
+int main(void) {
+	input();
+	printf("result : %d\n", solve());
+	return 0;
+}
+
+void input() {
+	scanf("%d %d", &N, &M);
+	scanf("%d %d", &W, &H);
+
+	for (int i = 0; i < N; i++) {
+		for (int l = 0; l < M; l++)
+			scanf("%d", &arr[i][l]);
+	}
+}
+
+int solve() {
+	int count, sum;
+	count = M - H + 1;
+	for (int i = 0; i < count; i++) { // horizontal count
+		sum = 0;
+		for (int l = 0; l < W; l++) { // vertical count
+			for (int k = i; k < i + H; k++)
+				sum += arr[l][k];
+		}
+		if (sum > max) // change sum
+			max = sum;
+	}
+	return max;
+}
