@@ -1,0 +1,35 @@
+#define _CRT_SECURE_NO_WARNINGS
+#include <stdio.h>
+#include <queue>
+using namespace std;
+
+struct ELE { int v; int cnt; }; // v : 현재 온도, cnt : 현재 갯수
+queue<ELE> Queue;
+
+int main(void) {
+	int a, b; // a : 현재 온도, b : 목표 온도
+	ELE value;
+
+	scanf("%d %d", &a, &b);
+	Queue.push({ a, 0 });
+
+	while (!Queue.empty()) {
+		value = Queue.front();
+		Queue.pop();
+
+		if (value.v == b)
+			break;
+		else if (value.v < b) {
+			Queue.push({ value.v + 10, value.cnt + 1 });
+			Queue.push({ value.v + 5, value.cnt + 1 });
+			Queue.push({ value.v + 1, value.cnt + 1 });
+		}
+		else {
+			Queue.push({ value.v - 10, value.cnt + 1 });
+			Queue.push({ value.v - 5, value.cnt + 1 });
+			Queue.push({ value.v - 1, value.cnt + 1 });
+		}
+	}
+	printf("%d\n", value.cnt);
+	return 0;
+}
