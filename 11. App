@@ -1,0 +1,40 @@
+#define _CRT_SECURE_NO_WARNINGS
+#include <stdio.h>
+
+int n, M;
+int min = 1000;
+int m[100] = { 0, };
+int c[100] = { 0, };
+
+void input();
+void solve(int loc, int sum, int mCost);
+
+int main(void) {
+	input();
+	solve(0, 0, 0);
+	printf("%d\n", min);
+	return 0;
+}
+
+void input() {
+	scanf("%d %d", &n, &M);
+	for (int i = 0; i < n; i++)
+		scanf("%d", &m[i]);
+	for (int i = 0; i < n; i++)
+		scanf("%d", &c[i]);
+}
+
+void solve(int loc, int sum, int mCost) { // 현재 계산 위치, 현재까지의 합
+	for (int i = loc; i < n; i++) {
+		if (loc == n)
+			break;
+		sum += m[i];
+		mCost += c[i];
+		if (sum < M)
+			solve(loc + 1, sum, mCost);
+		else {
+			if (mCost <= min)
+				min = mCost;
+		}
+	}
+}
