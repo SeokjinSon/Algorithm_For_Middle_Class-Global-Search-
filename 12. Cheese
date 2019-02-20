@@ -1,0 +1,90 @@
+
+#define _CRT_SECURE_NO_WARNINGS
+#include <stdio.h>
+
+int n, m; // n : 세로, m : 가로
+int time = 0; // 모두 녹아 없어지는 데 걸리는 시간
+int arr[100][100] = { 0, }; // 모눈종이
+int arr2[100][100] = { 0, }; // 삭제할 치즈 표시
+int dy[4] = { -1, 1, 0, 0 }; // 위, 아래, 좌, 우
+int dx[4] = { 0, 0, -1, 1 }; // 위, 아래, 좌, 우
+
+void input();
+void outCheese(int a, int b);
+int delCheese(int a, int b);
+void copy();
+
+int main(void) {
+	input();
+	solve();
+	printf("%d\n", time);
+	return 0;
+}
+
+void input() {
+	scanf("%d %d", &n, &m);
+	for (int i = 0; i < n; i++) {
+		for (int l = 0; l < m; l++) {
+			scanf("%d", &arr[i][l]); // 치즈 : 1, 치즈X : 0
+			arr2[i][l] = arr[i][l];
+		}
+	}
+}
+
+void solve() {
+	int cnt;
+
+	while (1) {
+		outCheese(0, 0);
+		cnt = 0;
+
+		for (int i = 0; i < n; i++) {
+			for (int l = 0; l < m; l++) {
+				if ((arr[i][l] == 1) && delCheese(i, l) >= 2) {
+					arr2[i][l] = 2;
+					cnt++;
+				}
+			}
+		}
+		if (cnt == 0) // 녹을 치즈가 없음
+			break;
+		time++;
+		copy();
+	}
+}
+
+void outCheese(int a, int b) { // 치즈 외부 공간 판단, 세로 가로
+	if (a < 0 || b < 0 || a >= n || b >= m)
+		return;
+
+	// 위, 아래, 좌, 우
+	if (arr[a][b] == 0) {
+		arr[a][b] = 2;
+		outCheese(a + dy[0], b + dx[0]);
+		outCheese(a + dy[1], b + dx[1]);
+		outCheese(a + dy[2], b + dx[2]);
+		outCheese(a + dy[3], b + dx[3]);
+	}	
+}
+
+int delCheese(int a, int b) { // 위, 아래, 좌, 우
+	int cnt = 0;
+
+	if (arr[a + dy[0]][b + dx[0]] == 2)
+		cnt++;
+	if (arr[a + dy[1]][b + dx[1]] == 2)
+		cnt++;
+	if (arr[a + dy[2]][b + dx[2]] == 2)
+		cnt++;
+	if (arr[a + dy[3]][b + dx[3]] == 2)
+		cnt++;
+
+	return cnt;
+}
+
+void copy() {
+	for (int i = 0; i < n; i++) {
+		for (int l = 0; l < m; l++)
+			arr[i][l] = arr2[i][l];
+	}
+}
