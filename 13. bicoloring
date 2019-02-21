@@ -1,0 +1,55 @@
+#define _CRT_SECURE_NO_WARNINGS
+#include <stdio.h>
+
+int n, m; // n : 정점, m : 간선
+int arr[200][200] = { 0, }; // 간선 연결 여부
+int color[200] = { 0, }; // 정점의 색
+
+void input();
+void solve(int dot, int col);
+void output();
+
+int main(void) {
+	input();
+	solve(0, 1);
+	output();
+	return 0;
+}
+
+void input() {
+	int s, e;
+
+	scanf("%d %d", &n, &m); 
+	for (int i = 0; i < m; i++) {
+		scanf("%d %d", &s, &e);
+		arr[s][e] = arr[e][s] = 1; // 연결된 곳은 1로 표시
+	}
+}
+
+void solve(int dot, int col) { // 시작 정점, 색깔
+	color[dot] = col; // 현재 정점의 색깔
+
+	for (int i = 0; i < n; i++) { // 연결되어 있고 인접한 정점의 색이 동일
+		if (arr[dot][i] && (color[dot] == color[i])) {
+			color[dot] = 0;
+			return;
+		}
+	}
+
+	for (int i = 0; i < n; i++) {
+		if (arr[dot][i] && !color[i]) { // 연결되어 있고 적용된 색이 아직 없음
+			solve(i, 1); // 빨강
+			solve(i, 2); // 검정
+		}
+	}
+}
+
+void output() {
+	for (int i = 0; i < n; i++) {
+		if (color[i] == 0) {
+			printf("IMPOSSIBLE\n");
+			return;
+		}
+	}
+	printf("OK\n");
+}
