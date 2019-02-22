@@ -1,0 +1,24 @@
+#define _CRT_SECURE_NO_WARNINGS
+#include <stdio.h>
+
+int n, cnt = 0;
+void solve(int sum);
+
+int main(void) {
+	scanf("%d", &n);
+	solve(0);
+	printf("%d\n", cnt);
+	return 0;
+}
+
+void solve(int sum) {
+	if (sum > n)
+		return;
+	if (sum == n) {
+		cnt++;
+		return;
+	}
+
+	solve(sum + 1);
+	solve(sum + 2);
+}
