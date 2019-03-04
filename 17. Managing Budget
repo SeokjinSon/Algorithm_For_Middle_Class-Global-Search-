@@ -1,0 +1,32 @@
+#define _CRT_SECURE_NO_WARNINGS
+#include <stdio.h>
+
+int B, n;
+int ans = 0; // 최솟값
+int arr[21] = { 0, };
+
+void input();
+void solve(int sum, int seq);
+
+int main(void) {
+	input();
+	solve(0, 0);
+	printf("%d\n", ans);
+	return 0;
+}
+
+void input() {
+	scanf("%d %d", &B, &n); // B : 남은 예산, n : 활동 수
+	for (int i = 0; i < n; i++)
+		scanf("%d", &arr[i]); // 각 활동의 비용
+}
+
+void solve(int sum, int seq) { // sum : 현재까지의 합계, seq : 현재 동전의 수
+	if (seq == n + 1) {
+		if (sum <= B && ans < sum)
+			ans = sum;
+		return;
+	}
+	solve(sum + arr[seq], seq + 1);
+	solve(sum, seq + 1);
+}
