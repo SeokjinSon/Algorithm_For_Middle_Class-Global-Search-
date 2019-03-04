@@ -1,0 +1,77 @@
+/* 전체
+#define _CRT_SECURE_NO_WARNINGS
+#include <stdio.h>
+
+int arr[10][10] = { 0, };
+int n;
+int min = 100; // result(min_sum)
+
+void input();
+void solve(int row, int col, int sum);
+
+int main(void) {
+	input();
+	solve(0, -1, 0); // row, col, sum
+	printf("Min_Sum : %d\n", min);
+	return 0;
+}
+
+void input() {
+	scanf("%d", &n);
+	for (int i = 0; i < n; i++) {
+		for (int l = 0; l < n; l++)
+			scanf("%d", &arr[i][l]);
+	}
+}
+
+void solve(int row, int col, int sum) {
+	if (row > (n - 1)) {
+		if (min > sum)
+			min = sum;
+		return;
+	}
+	for (int i = 0; i < n; i++) {
+		if (col == i)
+			continue;
+		else
+			solve(row + 1, i, sum + arr[row][i]);
+	}
+}
+*/
+
+/* 하나의 깊이에 한 종류의 동전 
+#define _CRT_SECURE_NO_WARNINGS
+#include <stdio.h>
+
+int m, n;
+int min = 100;
+int money[10] = { 0, };
+
+void input();
+void solve(int sum, int cnt, int res);
+
+int main(void) {
+	input();
+	solve(0, 0, 0);
+	printf("%d\n", min);
+	return 0;
+}
+
+void input() {
+	scanf("%d %d", &m, &n); // m : 거슬러줘야 할 돈 액수, n : 동전 종류
+	for (int i = 0; i < n; i++)
+		scanf("%d", &money[i]);
+}
+
+void solve(int sum, int cnt, int res) { // 합계, 현재 깊이, 사용한 동전 수
+	if (sum > m || cnt == n) // 합이 거슬러줘야 할 돈보다 크거나 깊이가 동전개수 이상
+		return;
+	if (sum == m) {
+		if (res < min)
+			min = res;
+		return;
+	}
+	for (int i = 0; sum + money[cnt] * i <=m; i++)
+		solve(sum + money[cnt] * i, cnt + 1, res + i);
+}
+*/
