@@ -1,0 +1,40 @@
+
+#define _CRT_SECURE_NO_WARNINGS
+#include <stdio.h>
+
+int n, last, wei[7] = { 1, 3, 9, 27, 81, 243, 729 }; // 사용 가능한 추의 무게
+int check[7] = { 0, }; // 추의 위치가 어디인지(0 : 사용X, 1 : 왼쪽, 2 : 오른쪽)
+
+void solve(int left, int right);
+
+int main(void) {
+	scanf("%d", &n); // 구할 물건의 무게
+	printf("%d ", n);
+	solve(n, 0);
+	return 0;
+}
+
+void solve(int left, int right) { // 왼쪽 저울 무게, 오른쪽 저울 무게
+	if (last == 1)
+		return;
+	if (left == right) {
+		for (int loc = 1; loc <=2 ; loc++) {
+			for (int i = 0; i < 7; i++) {
+				if (check[i] == loc)
+					printf("%d ", wei[i]);
+			}
+			if (loc == 1)
+				printf("0 ");
+		}
+		last = 1;
+	}
+	for (int i = 0; i < 7; i++) {
+		if (check[i] == 0) {
+			check[i] = 1;
+			solve(left + wei[i], right);
+			check[i] = 2;
+			solve(left, right + wei[i]);
+			check[i] = 0;
+		}
+	}
+}
