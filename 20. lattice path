@@ -1,0 +1,35 @@
+#define _CRT_SECURE_NO_WARNINGS
+#include <stdio.h>
+
+int H, W, path = 0;
+
+void input();
+void solve(int h, int w);
+int check(int h, int w);
+
+int main(void) {
+	input();
+	solve(0, 0);
+	printf("%d\n", path);
+	return 0;
+}
+
+void input() {
+	scanf("%d %d", &H, &W); // H : 세로 , W : 가로
+}
+
+void solve(int h, int w) {
+	if (h > H || w > W)
+		return;
+	if ((h == H) && (w == W)) {
+		path++; // 가능한 경로 + 1
+		return;
+	}
+	solve(h + 1, w);
+	if (check(h, w))
+		solve(h, w + 1);
+}
+
+int check(int h, int w) { // 1 : 내부, 0 : 외부
+	return (((double)H / W) <= ((double)h / (w+1)) ? 1 : 0);
+}
