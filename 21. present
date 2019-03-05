@@ -1,0 +1,46 @@
+#define _CRT_SECURE_NO_WARNINGS
+#include <stdio.h>
+
+int n, gildong = 100, min = 100, arr[15] = { 0, };
+int peop[3] = { 0, }; // 길동, 길순, 길삼
+
+void input();
+void solve(int seq, int dong, int sun, int sam);
+void output();
+
+int main(void) {
+	input();
+	solve(0, 0, 0, 0); // 순서, 길동, 길순, 길삼
+	output();
+	return 0;
+}
+
+void input() {
+	scanf("%d", &n);
+	for (int i = 0; i < n; i++)
+		scanf("%d", &arr[i]);
+}
+
+void solve(int seq, int dong, int sun, int sam) {
+	if (seq < n) {
+		solve(seq + 1, dong + arr[seq], sun, sam);
+		solve(seq + 1, dong, sun + arr[seq], sam);
+		solve(seq + 1, dong, sun, sam + arr[seq]);
+	}
+	else if (seq == n) {
+		if (dong >= sun && sun >= sam && dong - sam < min && dong < gildong) {
+			gildong = dong;
+			peop[0] = dong;
+			peop[1] = sun;
+			peop[2] = sam;
+		}
+	}
+	else
+		return;
+}
+
+void output() {
+	for (int i = 0; i < 3; i++)
+		printf("%d ", peop[i]);
+	printf("\n");
+}
