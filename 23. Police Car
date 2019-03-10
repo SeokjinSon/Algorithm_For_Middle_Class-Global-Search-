@@ -1,0 +1,47 @@
+
+#define _CRT_SECURE_NO_WARNINGS
+#include <stdio.h>
+
+int n, w, ans=100;
+int arr[1000][2] = { 0, }; // 발생한 사건 위치
+
+void input();
+void solve(int one, int two, int sum);
+int dis(int a, int b);
+int abs(int a);
+
+int main(void) {
+	input();
+	// 어느 위치들에 있을 때의 이동한 거리 합
+	solve(0, 1, 0); // 경찰차 1 위치, 경찰차 2 위치, 현재까지 이동 거리
+	printf("%d\n", ans);
+	return 0;
+}
+
+void input() {
+	scanf("%d %d", &n, &w); // n : 도로 크기, w : 발생 사건 수
+	arr[0][0] = arr[0][1] = 1; // (0, 0)
+	arr[1][0] = arr[1][1] = n; // (n, n)
+	for (int i = 2; i < w+2; i++)
+		scanf("%d %d", &arr[i][0], &arr[i][1]); // 세로 위치, 가로 위치
+	
+}
+
+void solve(int one, int two, int sum) { // one : 경찰차 1 위치, two : 경찰차 2 위치, sum : 이동거리 합계
+	int next = (one > two ? one : two) + 1; // 갯수 : 3 -> 마지막 위치 : 4, 다음으로 이동할 위치
+	if (next >= w + 2) {
+		if (sum < ans)
+			ans = sum;
+		return;
+	}
+	solve(next, two, sum + dis(one, next));
+	solve(one, next, sum + dis(two, next));
+}
+
+int dis(int a, int b) { // 두 점 사이의 거리 판별(a : 경찰차, b : 사건 위치)
+	return abs(arr[a][0] - arr[b][0]) + abs(arr[a][1] - arr[b][1]);
+}
+
+int abs(int a) { // 절댓값 출력
+	return a > 0 ? a : -a;
+}
